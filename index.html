@@ -1,19 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Chef Michel Dumas</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="assets/vendor/materialize/css/materialize.css">
+    <link rel="stylesheet" href="assets/css/main.css">
     <link rel="icon" type="image/png" href="assets/image/logoMichel.png">
     <script src="assets/vendor/vuejs/vue.js"></script>
 </head>
 <body>
+    <header>
+        <img src="assets/image/leCHEF.jpg" alt="chef michel">
+        <p>Chef Michel Dumas</p>
+    </header>
     <div id="main">
+        <div id="title">
+            <h1>Le site de recettes par référence</h1>
+            <img src="assets/image/under-line.png">
+        </div>
         <app></app>
     </div>
     <script src="assets/vendor/materialize/js/materialize.js"></script>
     <script type="module" src="src/spoonacular.js"></script>
+    <script type="module" src="src/components/search.js"></script>
+    <script type="module" src="src/components/recette.js"></script>
+    <script type="module" src="src/components/detail.js"></script>
+    <script type="module" src="src/components/filter.js"></script>
     <script type="module" src="src/components/app.js"></script>
     <script type="module" src="src/main.js"></script>
 </body>

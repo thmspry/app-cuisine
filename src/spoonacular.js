@@ -21,7 +21,28 @@ const useCuisineApi = {
             resolve(data);
         }).
         catch(error => reject(error));
+    }),
+
+    bySearch: (search) => new Promise((resolve, reject) => {
+        const searchUrlRequest = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&query=` + search + `&number=9`;
+        fetch(searchUrlRequest).
+        then((response) => response.json()).
+        then(data => {
+            resolve(data);
+        }).
+        catch(error => reject(error));
+    }),
+
+    getRandom: () => new Promise((resolve, reject) => {
+        const randomRecettes= `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=9`;
+        fetch(randomRecettes).
+        then((response) => response.json()).
+        then(data => {
+            resolve(data);
+        }).
+        catch(error => reject(error));
     })
+
 
 };
 export default useCuisineApi;

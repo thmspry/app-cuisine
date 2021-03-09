@@ -1,0 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: quote;
+    src: url(../font/Autography.otf);
+}
+
+header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 150px;
+    border-bottom: 5px solid #253cb0;
+    outline: 5px solid #ed2939;
+}
+
+header img {
+    height: 100%;
+    border-radius: 100%;
+    padding: 20px;
+}
+
+header p {
+    padding-left: 60px;
+    font-size: 50px;
+    font-family: quote;
+}
+
+#main {
+    width: 80%;
+    margin: auto;
+}
+
+#title {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#title h1 {
+    font-family: quote;
+    width: fit-content;
+}
+
+#title img {
+    height: 100px;
+}
+
+#search-case form {
+    display: flex;
+    justify-content: center;
+}
+
+#search-case form #input-bar {
+    width: 60%;
+}
+
+#result {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.side-result {
+    width: 15%;
+    height: 200px;
+    border: grey 2px solid;
+    box-shadow: grey 0 0 2px;
+}
+
+
+
+#recettes-apercu {
+    width: 60%;
+}
+
+.grid {
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    grid-gap: 2%;
+}
+
+/* Re-definition de Materialize */
+.btn, .btn-large, .btn-small {
+    background-color: #253cb0;
+}
+
+.btn:hover, .btn-large:hover, .btn-small:hover {
+    background-color: #142362;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly]) {
+    border-bottom: 1px solid #253cb0;
+    -webkit-box-shadow: 0 1px 0 0 #253cb0;
+    box-shadow: 0 1px 0 0 #253cb0;
+}
