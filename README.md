@@ -1,4 +1,4 @@
-#Devoir maison
+#Devoir maison \
 La date de rendu et les modalités de rendu sont à définir avec votre enseignant de TP, vous devez proposer un
 client riche portant sur https://spoonacular.com/food-api.
 Vous devrez dans ce projet utiliser la persistance locale et au moins une deuxième API de votre choix.
