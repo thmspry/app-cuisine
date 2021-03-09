@@ -30,7 +30,7 @@ header p {
 }
 
 #main {
-    width: 80%;
+    width:70%;
     margin: auto;
 }
 
@@ -39,6 +39,7 @@ header p {
     flex-flow: column;
     justify-content: center;
     align-items: center;
+    margin-bottom: 100px;
 }
 
 #title h1 {
@@ -50,15 +51,13 @@ header p {
     height: 100px;
 }
 
-#search-case form {
+.tabs {
     display: flex;
-    justify-content: center;
 }
 
-#search-case form #input-bar {
-    width: 60%;
+.tabs li {
+    width: 50%;
 }
-
 #result {
     display: flex;
     justify-content: space-between;
@@ -66,7 +65,7 @@ header p {
 }
 
 .side-result {
-    width: 15%;
+    width: 30%;
     height: 200px;
     border: grey 2px solid;
     box-shadow: grey 0 0 2px;
@@ -75,7 +74,7 @@ header p {
 
 
 #recettes-apercu {
-    width: 60%;
+    width: 65%;
 }
 
 .grid {
