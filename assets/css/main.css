@@ -39,7 +39,7 @@ header p {
     flex-flow: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
 }
 
 #title h1 {
@@ -51,12 +51,34 @@ header p {
     height: 100px;
 }
 
+#onglets {
+    margin-bottom: 30px;
+}
+
 .tabs {
     display: flex;
 }
 
 .tabs li {
     width: 50%;
+}
+
+.checkboxes {
+    display: grid;
+    grid-template: repeat(4,1fr) / repeat(4,1fr);
+    grid-gap: 0.2%;
+}
+
+.enter-button {
+    margin-top: 30px;
+}
+
+#no-result {
+    display: flex;
+    width:50%;
+    justify-content:center;
+    font-style: italic;
+    color: grey;
 }
 #result {
     display: flex;
@@ -77,10 +99,11 @@ header p {
     width: 65%;
 }
 
-.grid {
+.grid-recettes {
     display: grid;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
     grid-gap: 2%;
+    margin-top: 20px;
 }
 
 /* Re-definition de Materialize */
@@ -96,4 +119,21 @@ input[type=text]:not(.browser-default):focus:not([readonly]) {
     border-bottom: 1px solid #253cb0;
     -webkit-box-shadow: 0 1px 0 0 #253cb0;
     box-shadow: 0 1px 0 0 #253cb0;
+}
+
+.tabs .tab a:hover, .tabs .tab a.active {
+    color: #de1823;
+}
+
+.tabs .tab a {
+    color: rgba(255, 0, 12, 0.5);
+}
+
+.tabs .indicator {
+    background-color: #de1823;
+}
+
+[type="checkbox"].filled-in:checked + span:not(.lever):after {
+    border: 2px solid #253cb0;
+    background-color: #253cb0;
 }

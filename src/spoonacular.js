@@ -8,14 +8,22 @@ const useCuisineApi = {
         Exemple : ["apples","flour",sugar"]
         // Exemple de requete : https://api.spoonacular.com/recipes/findByIngredients?apiKey=805f9224f7a34732a3ffd6f68ce31d5e&ingredients=apples,+flour,+sugar.
      */
-    byIngredient: (ingredients) => new Promise((resolve, reject) => {
-        let ingredientUrlRequest= `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${API_KEY}&ingredients=`;
-        ingredientUrlRequest += ingredients[0]
-        ingredients.shift();
-        ingredients.forEach(ingr => {
-            ingredientUrlRequest += ",+" + ingr;
+    byIntolerances: (intolerancesAssociatif) => new Promise((resolve, reject) => {
+        let intolerances = [];
+        for(var key in intolerancesAssociatif) {
+            if(intolerancesAssociatif[key]) {
+                intolerances.push(key);
+            }
+        }
+        let intolerancesUrlRequest = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&intolerances=`;
+        intolerancesUrlRequest += intolerances[0]
+        intolerances.shift();
+        intolerances.forEach(into => {
+            intolerancesUrlRequest += ",+" + into;
         });
-        fetch(ingredientUrlRequest).
+        intolerancesUrlRequest += `&number=9`;
+
+        fetch(intolerancesUrlRequest).
         then((response) => response.json()).
         then(data => {
             resolve(data);
@@ -23,9 +31,15 @@ const useCuisineApi = {
         catch(error => reject(error));
     }),
 
-    bySearch: (search) => new Promise((resolve, reject) => {
-        const searchUrlRequest = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&query=` + search + `&number=9`;
-        fetch(searchUrlRequest).
+    bySearch: (keywords) => new Promise((resolve, reject) => {
+        let keywordUrlRequest = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&query=`;
+        keywordUrlRequest += keywords[0];
+        keywords.shift();
+        keywords.forEach(word => {
+            keywordUrlRequest += ",+" + word;
+        });
+        keywordUrlRequest += `&number=9`;
+        fetch(keywordUrlRequest).
         then((response) => response.json()).
         then(data => {
             resolve(data);
