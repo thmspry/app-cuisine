@@ -14,13 +14,14 @@ Vue.component('recette', {
             <p> {{recette.title}} </p>
         </div>
         <div class="card-action">
-            <a @click="showMore(movie.imdbID)" href="#app">show more</a>
+            <a @click="showMore(recette)" href="#app">show more</a>
         </div>
       </div>
     </div>`,
     methods : {
-        showMore : function (id) {
-            this.$emit('showMore-event', id);
+        showMore : function (recette) {
+            console.log("La recette :",recette)
+            this.$emit('showMore-event', recette);
         }
     }
 

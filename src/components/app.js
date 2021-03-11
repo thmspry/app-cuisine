@@ -1,3 +1,4 @@
+import useCuisineApi from "../spoonacular.js";
 Vue.component('app', {
     template: `<div id="app">
                     <div id="search-case">
@@ -9,11 +10,11 @@ Vue.component('app', {
                         </div>
                     
                         <div id="recettes-apercu" class="grid-recettes">
-                            <recette v-for="recette in recettes" v-bind:key="recette.id" v-bind:recette="recette"> </recette>
+                            <recette v-if="recettes" v-for="recette in recettes" v-bind:key="recette.id" v-bind:recette="recette" @showMore-event="showMore"> </recette>
                         </div>
                         
                         <div id="details" class="side-result">
-                            <detail> </detail>
+                            <detail v-bind:recette="recetteSelected"> </detail>
                         </div>
                         
                     </div>
@@ -21,23 +22,36 @@ Vue.component('app', {
     data : function () {
         return {
             recettes : [],
-            noResults : false
+            noResults : false,
+            recetteSelected : ""
         }},
+
+    mounted: function() { // Sur le chargement de la page
+        this.init()       // On lance l'init
+    },
+
     methods: {
-        isNoResults: function (noRes) {
+        init : function () { // Cet init permet d'afficher au chargement des recettes au hasard
+            useCuisineApi.getRandom().then(recettesRandom => {
+                this.recettes = recettesRandom.recipes;
+            })
+        },
+        isNoResults: function (noRes) { // Si la recherche n'a pas donner de résultat
             this.recettes = "";
             this.noResults = noRes;
-            console.log(this.noResults);
+
         },
-        searchKeywordIsOver : function (recettes, noRes) {
+        searchKeywordIsOver : function (recettes, noRes) { // Recherche par mots-clé (ingrédient, nom de plat, ...)
             this.recettes = recettes.results;
             this.noResults = noRes;
-            console.log(this.noResults);
         },
 
-        searchIntoleranceIsOver : function (recettes) {
+        searchIntoleranceIsOver : function (recettes) {// Recherche par intolérance
             this.recettes = recettes.results;
-            console.log(recettes)
+        },
+
+        showMore : function (recette) {
+            this.recetteSelected = recette;
         }
     }
 })

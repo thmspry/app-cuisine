@@ -55,8 +55,24 @@ const useCuisineApi = {
             resolve(data);
         }).
         catch(error => reject(error));
-    })
+    }),
 
+    getWinePairing : (recette) => new Promise((resolve, reject) => {
+        const wineUrl = `https://api.spoonacular.com/food/wine/pairing?apiKey=${API_KEY}&food=`;
+        console.log("Recettes dao : ", recette )
+        recette = recette.extendedIngredients;
+        recette.forEach(r => {
+                let ingredientName = r.name;
+                fetch(wineUrl + ingredientName)
+                    .then((response) => response.json())
+                    .then(data => {
+                        if (data.status != "failure") {
+                            resolve(data);
+                        }
+                    }).catch(error => reject(error));
+            }
+        );
+    })
 
 };
 export default useCuisineApi;
