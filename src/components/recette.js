@@ -20,7 +20,6 @@ Vue.component('recette', {
     </div>`,
     methods : {
         showMore : function (recette) {
-            console.log("La recette :",recette)
             this.$emit('showMore-event', recette);
         }
     }

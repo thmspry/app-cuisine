@@ -72,30 +72,34 @@ Vue.component('search', {
                 `,
     data : function() {
         return {
-            keywords : "",
-            intolerance : [],
-            noResult : false
+            keywords : "", // Les mots-clés de la recherche par mots-clés
+            intolerance : [], // Les intolérance de la recherche par intolérance
+            noResult : false // Determine s'il n'y a pas de résultat
         }},
     methods : {
+        /**
+         * Utilise la recherche par mots-clés
+         */
         searchKeyword : function () {
-            if (this.keywords.length > 0) {
-                this.noResult = false;
-                let kw = this.keywords.split(" ");
+            if (this.keywords.length > 0) { // S'il y a au moins 1 mot
+                this.noResult = false; // Il n'y au moins 1 résultat
+                let kw = this.keywords.split(" "); // Division de la string en array
                 useCuisineApi.bySearch(kw)
                     .then(r => {
-                        this.$emit('searchKeyword-event', r, this.noResult);
-                        this.keywords = "";
+                        this.$emit('searchKeyword-event', r, this.noResult); // On revoie le résultat à l'app
+                        this.keywords = ""; // On reset la recherche
                     })
                     .catch(error => console.log(error))
-            } else {
-                this.noResult = true;
+            } else { // S'il n'y a pas de mot
+                this.noResult = true; // Il y a donc pas de résultats
                 this.$emit('noResult-event', this.noResult);
             }
         },
         searchIntolerance : function () {
             useCuisineApi.byIntolerances(this.intolerance)
                 .then(r => {
-                    this.$emit('searchIntolerance-event', r);
+                    this.$emit('searchIntolerance-event', r); // On revoie le résultat à l'app
+                    this.intolerance = [] // On reset la recherche
                 })
                 .catch(error => console.log(error))
         }

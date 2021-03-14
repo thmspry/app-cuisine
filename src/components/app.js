@@ -46,11 +46,11 @@ Vue.component('app', {
             this.noResults = noRes;
         },
 
-        searchIntoleranceIsOver : function (recettes) {// Recherche par intolérance
+        searchIntoleranceIsOver : function (recettes) { // Recherche par intolérance
             this.recettes = recettes.results;
         },
 
-        showMore : function (recette) {
+        showMore : function (recette) { //
             this.recetteSelected = recette;
         }
     }
