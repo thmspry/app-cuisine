@@ -1,5 +1,4 @@
-//const API_KEY = '805f9224f7a34732a3ffd6f68ce31d5e';
-const API_KEY = '4c55266e9f324ee9b041c2867a42983d'
+const API_KEY = 'd87e3bbac77a48a8a67f20c6e36ad192'
 
 const useCuisineApi = {
 

@@ -91,7 +91,7 @@ Vue.component('search', {
             useCuisineApi.search(kw, this.intolerance)
                 .then(r => {
                     this.$emit('search-event', r); // On revoie le résultat à l'app
-                    this.intolerance = [] // On reset la recherche
+                    //this.intolerance = [] // On reset la recherche
                     this.keywords = ""; // On reset la recherche
                 })
                 .catch(error => console.log(error))

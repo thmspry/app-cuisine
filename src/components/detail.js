@@ -24,7 +24,8 @@ Vue.component('detail', {
                             frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                             allowfullscreen>
                     </iframe>
-                    <span>Vidéo de suggestion</span>
+                    <span v-if="noVideo == false">Vidéo de suggestion</span>
+                    <span v-if="noVideo == true">Pas de vidéo disponible sur la chaine Chef Michel Dumas</span>
                 </div>
                 
                 
@@ -35,8 +36,9 @@ Vue.component('detail', {
             recetteCourante : "",
             wine : "",
             srcVideo :"",
+            noVideo : false
         }},
-    updated: function() { // Sur le chargement de la page
+    updated: function() { // A chaque showMore
         this.setRecette(this.recette);
         this.searchVideo(this.recette);
     },
@@ -49,14 +51,20 @@ Vue.component('detail', {
             console.log(this.wine);
         },
         searchVideo : function (recette) {
+            console.log("Search");
             let query = [];
+
             let title = recette.title.split(" ");
-            query.push(title)
+            for(let i=0; i<title.length;i++) {
+                query.push(title[i])
+            }
+
             useYoutubeApi.searchOnMichelDumasChannel(query).then(r => {
-                if(r.items.length > 0) {
-                    this.srcVideo = "https://www.youtube.com/embed/" + r.items[0].id.videoId;
-                    console.log("ID video", this.srcVideo);
-                }
+                this.srcVideo = "https://www.youtube.com/embed/" + r.items[0].id.videoId;
+                console.log("ID video", this.srcVideo);
+                this.noVideo = false;
+                this.noVideo = true;
+                console.log("Video ? ", this.noVideo)
             }).catch(error => console.log(error));
         }
     }

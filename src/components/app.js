@@ -48,7 +48,6 @@ Vue.component('app', {
 
         showMore : function (recette) { //
             this.recetteSelected = recette;
-            console.log("La recette : ", recette)
         }
     }
 })
