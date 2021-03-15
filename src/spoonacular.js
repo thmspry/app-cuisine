@@ -62,10 +62,10 @@ const useCuisineApi = {
         let typeDeCuisine = recette.cuisines;
         let food
 
-        if (typeDeCuisine.length == 1){
+        if (typeDeCuisine.length === 1){
             food = typeDeCuisine[0]
         } else if (typeDeCuisine.length > 1){
-            typeDeCuisine = typeDeCuisine.filter(cuisine => cuisine != "Mediterranean" && cuisine != "European");
+            typeDeCuisine = typeDeCuisine.filter(cuisine => cuisine !== "Mediterranean" && cuisine !== "European");
             food = typeDeCuisine[0]
         } else if (typeDeCuisine.length < 1) {
             //recherche par ingrédient
@@ -74,7 +74,7 @@ const useCuisineApi = {
         fetch(wineUrl+food)
             .then((response) => response.json())
             .then(data => {
-                if (data.status != "failure") {
+                if (data.status !== "failure") {
                     resolve(data)
                 }
             })

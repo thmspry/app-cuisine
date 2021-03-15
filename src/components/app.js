@@ -33,6 +33,7 @@ Vue.component('app', {
     methods: {
         init : function () { // Cet init permet d'afficher au chargement des recettes au hasard
             useCuisineApi.getRandom().then(recettesRandom => {
+                console.log(recettesRandom)
                 this.recettes = recettesRandom.recipes;
             })
         },
@@ -48,6 +49,7 @@ Vue.component('app', {
 
         showMore : function (recette) { //
             this.recetteSelected = recette;
+
         }
     }
 })
