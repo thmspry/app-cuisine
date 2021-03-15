@@ -13,7 +13,7 @@ Vue.component('search', {
                                 <ul class="collapsible">
                                     <li>
                                         <div class="collapsible-header" id="intolerances-title">
-                                            <img src="assets/image/dropdown.svg" alt="dérouler">
+                                            <img src="assets/image/dropdown.svg" alt="dérouler" id="arrow">
                                             <p>Selectionner des intolérances</p>
                                         </div>
                                         <div class="collapsible-body">

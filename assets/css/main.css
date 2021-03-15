@@ -99,6 +99,32 @@ header p {
 }
 
 
+.rotate-180-up {
+    animation: 0.5s rotate-up forwards;
+}
+
+@keyframes rotate-up {
+    from {
+        transform: rotate(0);
+    }
+    to   {
+        transform: rotate(180deg);
+    }
+}
+
+.rotate-180-down {
+    animation: 0.5s rotate-down forwards;
+}
+
+@keyframes rotate-down {
+    from {
+        transform: rotate(180deg);
+    }
+    to   {
+        transform: rotate(0);
+    }
+}
+
 
 #recettes-apercu {
     width: 65%;
