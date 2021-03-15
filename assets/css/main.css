@@ -63,6 +63,11 @@ header p {
     width: 50%;
 }
 
+#intolerances-title img {
+    height: 20px;
+    margin-right: 20px;
+}
+
 .checkboxes {
     display: grid;
     grid-template: repeat(4,1fr) / repeat(4,1fr);

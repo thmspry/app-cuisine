@@ -7,5 +7,12 @@ document.addEventListener('DOMContentLoaded', function() {
     let optionsTabs = {
         duration : 500
     }
+
     var instanceTab = M.Tabs.init(el, optionsTabs);
+
+    var elInto = document.querySelectorAll('.collapsible');
+    let optionsInto = {
+        accordion : true
+    }
+    var instances = M.Collapsible.init(elInto, optionsInto);
 });

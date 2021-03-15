@@ -2,7 +2,7 @@ import useCuisineApi from "../spoonacular.js";
 Vue.component('app', {
     template: `<div id="app">
                     <div id="search-case">
-                        <search @searchKeyword-event="searchKeywordIsOver" @noResult-event="isNoResults" @searchIntolerance-event="searchIntoleranceIsOver" > </search>
+                        <search @search-event="searchIsOver" > </search>
                     </div>
                     <div id="result">
                         <div v-if="this.noResult" id="no-result">
@@ -41,17 +41,14 @@ Vue.component('app', {
             this.noResults = noRes;
 
         },
-        searchKeywordIsOver : function (recettes, noRes) { // Recherche par mots-clé (ingrédient, nom de plat, ...)
-            this.recettes = recettes.results;
-            this.noResults = noRes;
-        },
 
-        searchIntoleranceIsOver : function (recettes) { // Recherche par intolérance
+        searchIsOver : function (recettes) { // Recherche par mots-clé (ingrédient, nom de plat, ...)
             this.recettes = recettes.results;
         },
 
         showMore : function (recette) { //
             this.recetteSelected = recette;
+            console.log("La recette : ", recette)
         }
     }
 })
