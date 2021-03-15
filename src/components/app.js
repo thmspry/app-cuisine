@@ -13,7 +13,7 @@ Vue.component('app', {
                             <recette v-if="recettes" v-for="recette in recettes" v-bind:key="recette.id" v-bind:recette="recette" @showMore-event="showMore"> </recette>
                         </div>
                         
-                        <div id="details" class="side-result">
+                        <div v-if="recetteSelected" id="details" class="side-result">
                             <detail v-bind:recette="recetteSelected"> </detail>
                         </div>
                         

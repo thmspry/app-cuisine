@@ -11,22 +11,30 @@ Vue.component('detail', {
     template: `
             <div>
                 <p> Détails </p>
-                <table class="striped">
-                       <tbody>
-                            <tr> <td> Nom : </td> <td> {{recette.title}} </td></tr>
-                            <tr> <td> Vin recommandé : </td> <td> {{wine.pairedWines}} </td></tr>
-                       </tbody>
-                </table>
-                <iframe v-if="this.idVideo" width="560" height="315" src="https://www.youtube.com/embed/this.idVideo" 
-                        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                </iframe>
+                <div id="table">
+                    <table class="striped">
+                           <tbody>
+                                <tr> <td> Nom : </td> <td> {{recette.title}} </td></tr>
+                                <tr> <td> Vin recommandé : </td> <td> {{wine.pairedWines}} </td></tr>
+                           </tbody>
+                    </table>
+                </div>
+                <div id="video-yt" v-if="srcVideo">
+                    <iframe width="560" height="315" :src="srcVideo" 
+                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                    <span>Vidéo de suggestion</span>
+                </div>
+                
+                
+                
             </div>`,
     data : function() {
         return {
             recetteCourante : "",
             wine : "",
-            idVideo:"",
+            srcVideo :"",
         }},
     updated: function() { // Sur le chargement de la page
         this.setRecette(this.recette);
@@ -46,9 +54,8 @@ Vue.component('detail', {
             query.push(title)
             useYoutubeApi.searchOnMichelDumasChannel(query).then(r => {
                 if(r.items.length > 0) {
-                    this.idVideo = r.items[0].id.videoId;
-                    console.log("Youtube result : ", r);
-                    console.log("ID video", this.idVideo);
+                    this.srcVideo = "https://www.youtube.com/embed/" + r.items[0].id.videoId;
+                    console.log("ID video", this.srcVideo);
                 }
             }).catch(error => console.log(error));
         }

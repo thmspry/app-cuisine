@@ -85,6 +85,8 @@ header p {
     font-style: italic;
     color: grey;
 }
+
+
 #result {
     display: flex;
     justify-content: space-between;
@@ -94,8 +96,30 @@ header p {
 .side-result {
     width: 30%;
     height: 200px;
-    border: grey 2px solid;
-    box-shadow: grey 0 0 2px;
+    border-top:5px solid #ed2939;
+    box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%), 0 1px 5px 0 rgb(0 0 0 / 20%);
+}
+
+.side-result p {
+    margin: auto;
+    width: 20%;
+    font-size: 20px;
+}
+
+
+
+#video-yt {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+#video-yt iframe {
+    width: 100%;
+}
+
+#video-yt p {
+    font-style: italic;
 }
 
 
@@ -136,6 +160,7 @@ header p {
     grid-gap: 2%;
     margin-top: 20px;
 }
+
 
 /* Re-definition de Materialize */
 .btn, .btn-large, .btn-small {
