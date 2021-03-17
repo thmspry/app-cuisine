@@ -12,37 +12,68 @@ Vue.component('detail', {
         urlVideo : {
             required: false,
             default: ""
+        },
+        instructions : {
+            required: false,
+            default: []
         }
     },
     template: `
-            <div>
-                <p> Détails </p>
-                <div id="table">
-                    <table class="striped">
-                           <tbody>
-                                <tr> <td> Nom : </td> <td> {{recette.title}} et l'url : {{urlVideo}}</td></tr>
-                                <tr> <td> Description : </td> <td> {{recette.summary}} </td></tr>
-                                <tr> <td> Vin recommandé : </td> <td> {{wine.pairedWines}} </td></tr>
-                           </tbody>
-                    </table>
+            <div id="modal-detail" class="modal">
+                <div class="modal-content">
+                    <p> {{recette.title}}</p>
+                    <div class="details-text">
+                        <tbody>
+                            <tr> <td>Vin recommandé : </td> <td> <span v-if="wine.pairedWines">{{wine.pairedWines}}</span> 
+                                                                 <span v-else>Pas de vin(s) disponible(s)</span>
+                                                                 </td></tr>
+                            <tr> <td>Ingredients : </td> <td> <span v-for="ing in recette.extendedIngredients">{{ing.name}} ({{ing.measures.metric.amount}} {{ing.measures.metric.unitShort}}), </span> </td></tr>
+                            <tr> <td>Note : </td> <td> {{recette.aggregateLikes}}</td></tr>
+                            <tr> <td>Weight Watcher Smart Points : </td> <td> {{recette.weightWatcherSmartPoints}}</td></tr>
+                            <tr> <td>Caractèristiques : </td> <td> 
+                                                        <span v-if="recette.cheap">Pas cher, </span>
+                                                        <span v-else>Cher, </span>
+                                                        <span v-if="recette.glutenFree">sans gluten, </span>
+                                                        <span v-else>avec gluten, </span>
+                                                        <span v-if="recette.veryPopular">populaire, </span>
+                                                        <span v-else>peu populaire, </span>
+                                                        <span v-if="recette.veryHealthy">bon pour la santé, </span>
+                                                        <span v-else>pas très sain, </span>
+                                                        <span v-if="recette.vegetarian">végétarien, </span>
+                                                        <span v-else>non végétarien, </span>
+                                                        <span v-if="recette.vegan">vegan.</span>
+                                                        <span v-else>non vegan.</span>
+                                                        
+                                            </td></tr>
+                        </tbody>
+                        
+                        <div id="instructions">
+                            <p>Instructions : </p>
+                            <instruction v-if="instructions" v-for="instruction in instructions" v-bind:key="instruction.number" v-bind:instruction="instruction"></instruction>
+                            <span v-else>Pas d'instruction</span>
+                        </div>
+                    </div>
+                    
+                    <div id="video-yt" v-if="urlVideo">
+                        <iframe width="560" height="315" :src="urlVideo" 
+                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                        <span v-if="urlVideo">Vidéo de suggestion</span>
+                    </div>
                 </div>
-                <div id="video-yt" v-if="urlVideo">
-                    <iframe width="560" height="315" :src="urlVideo" 
-                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                    </iframe>
-                    <span v-if="urlVideo">Vidéo de suggestion</span>
+                <div class="modal-footer">
+                  <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
                 </div>
             </div>`,
+    updated : function () {
+        console.log("Je suis UPDATED");
+        },
     data : function() {
         return {
             recetteCourante : "",
             srcVideo :"",
-            noVideo : false
-        }},
-    updated: function() { // A chaque showMore
-    },
-    methods : {
-
-    }
+            noVideo : false,
+        }
+        },
 })

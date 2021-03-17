@@ -14,8 +14,8 @@ Vue.component('app', {
                             <recette v-if="recettes" v-for="recette in recettes" v-bind:key="recette.id" v-bind:recette="recette" @showMore-event="showMore"> </recette>
                         </div>
                         
-                        <div v-if="recetteSelected" id="details" class="side-result">
-                            <detail v-bind:recette="recetteSelected" :wine="wine" :urlVideo="urlVideo" > </detail>
+                        <div id="details">
+                            <detail v-bind:recette="recetteSelected" :wine="wine" :urlVideo="urlVideo" :instructions="instructionRecettes"> </detail>
                         </div>
                         
                     </div>
@@ -26,7 +26,8 @@ Vue.component('app', {
             noResults : false,
             recetteSelected : "",
             wine : "",
-            urlVideo:""
+            urlVideo:"",
+            instructionRecettes:""
         }},
 
     mounted: function() { // Sur le chargement de la page
@@ -49,7 +50,7 @@ Vue.component('app', {
         searchWine : function (recette) {
             useCuisineApi.getWinePairing(recette).then(r => {
                 this.wine = r;
-            }).catch(error => console.log("ERROR : search wine : " + error));
+            }).catch(error => console.log("ERROR : search wine : ", error));
         },
 
         searchVideo : function (recette) {
@@ -57,11 +58,13 @@ Vue.component('app', {
 
             useYoutubeApi.searchOnMichelDumasChannel(query).then(r => {
                 this.urlVideo = "https://www.youtube.com/embed/" + r.items[0].id.videoId;
-            }).catch(err => console.log("ERROR : search video : " + err))
+            }).catch(err => console.log("ERROR : search video : ", err))
         },
 
         showMore : function (recette) { //
             this.recetteSelected = recette;
+            this.instructionRecettes = recette.analyzedInstructions[0].steps;
+            console.log("Recette courante : ", this.recetteSelected)
             this.searchWine(this.recetteSelected);
             this.searchVideo(this.recetteSelected);
 

@@ -1,5 +1,3 @@
-import useCuisineApi from "../spoonacular.js";
-
 Vue.component('recette', {
     props: ["recette"],
     template: `
@@ -14,7 +12,7 @@ Vue.component('recette', {
             <p> {{recette.title}} </p>
         </div>
         <div class="card-action">
-            <a @click="showMore(recette)" href="#app">show more</a>
+            <a @click="showMore(recette)" class="waves-effect waves-light btn modal-trigger" href="#modal-detail">show more</a>
         </div>
       </div>
     </div>`,

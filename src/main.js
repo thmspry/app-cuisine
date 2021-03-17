@@ -3,18 +3,24 @@ const vue = new Vue({
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    let el = document.querySelector(".tabs");
-    let optionsTabs = {
-        duration : 500
-    }
 
-    var instanceTab = M.Tabs.init(el, optionsTabs);
 
-    var elInto = document.querySelectorAll('.collapsible');
+    // Instanciation Collapsible des intolérances
+    var collapsible = document.querySelectorAll('.collapsible');
     let optionsInto = {
         accordion : true
     }
-    var instances = M.Collapsible.init(elInto, optionsInto);
+    var instanceCollapsible = M.Collapsible.init(collapsible, optionsInto);
+
+    // Instanciation Modal de détail
+    var modal = document.querySelectorAll('.modal');
+    let optionsModal = {
+        opacity : 0.3,
+        inDuration : 250,
+        outDuration: 250
+    }
+    var instanceModal = M.Modal.init(modal, optionsModal);
+
 
     let dropdown = document.querySelector(".collapsible");
 
