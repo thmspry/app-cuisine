@@ -32,6 +32,7 @@ Vue.component('app', {
 
     methods: {
         init : function () { // Cet init permet d'afficher au chargement des recettes au hasard
+            //TODO changer init si local_storage possède des informations
             useCuisineApi.getRandom().then(recettesRandom => {
                 console.log(recettesRandom)
                 this.recettes = recettesRandom.recipes;

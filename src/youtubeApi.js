@@ -1,5 +1,5 @@
-//const API_KEY = 'AIzaSyD-0a6UVG1gM7yxF_Nmt3DhpFGKxq-P7Ew'
-const API_KEY = 'AIzaSyAwMiD8InjTJB84mLZqQf6z4z3zKvshWiM'
+const API_KEY = 'AIzaSyD-0a6UVG1gM7yxF_Nmt3DhpFGKxq-P7Ew'
+//const API_KEY = 'AIzaSyAwMiD8InjTJB84mLZqQf6z4z3zKvshWiM'
 const useYoutubeApi = {
     searchOnMichelDumasChannel: (keywords) => new Promise((resolve, reject) => {
         let searchUrl= `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${API_KEY}&type=video&channelId=UCSLyEx8ISkp567AjOAHYN5Q&q=`;
@@ -25,6 +25,7 @@ const useYoutubeApi = {
             catch(error => reject(error));
         });*/
         keywords = keywords.join('|')
+        // keywords = keywords.join('+')
         fetch(searchUrl + keywords)
             .then((response) => response.json())
             .then(data => {
