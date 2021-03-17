@@ -1,4 +1,5 @@
 import useCuisineApi from "../spoonacular.js";
+import useYoutubeApi from "../youtubeApi.js";
 Vue.component('app', {
     template: `<div id="app">
                     <div id="search-case">
@@ -14,7 +15,7 @@ Vue.component('app', {
                         </div>
                         
                         <div v-if="recetteSelected" id="details" class="side-result">
-                            <detail v-bind:recette="recetteSelected"> </detail>
+                            <detail v-bind:recette="recetteSelected" :wine="wine" :urlVideo="urlVideo" > </detail>
                         </div>
                         
                     </div>
@@ -23,7 +24,9 @@ Vue.component('app', {
         return {
             recettes : [],
             noResults : false,
-            recetteSelected : ""
+            recetteSelected : "",
+            wine : "",
+            urlVideo:""
         }},
 
     mounted: function() { // Sur le chargement de la page
@@ -34,22 +37,33 @@ Vue.component('app', {
         init : function () { // Cet init permet d'afficher au chargement des recettes au hasard
             //TODO changer init si local_storage possède des informations
             useCuisineApi.getRandom().then(recettesRandom => {
-                console.log(recettesRandom)
                 this.recettes = recettesRandom.recipes;
-            })
-        },
-        isNoResults: function (noRes) { // Si la recherche n'a pas donner de résultat
-            this.recettes = "";
-            this.noResults = noRes;
-
+            });
         },
 
         searchIsOver : function (recettes) { // Recherche par mots-clé (ingrédient, nom de plat, ...)
             this.recettes = recettes.results;
+            this.noResults = recettes.results.length <= 0;
+        },
+
+        searchWine : function (recette) {
+            useCuisineApi.getWinePairing(recette).then(r => {
+                this.wine = r;
+            }).catch(error => console.log("ERROR : search wine : " + error));
+        },
+
+        searchVideo : function (recette) {
+            let query = recette.title.split(" ");
+
+            useYoutubeApi.searchOnMichelDumasChannel(query).then(r => {
+                this.urlVideo = "https://www.youtube.com/embed/" + r.items[0].id.videoId;
+            }).catch(err => console.log("ERROR : search video : " + err))
         },
 
         showMore : function (recette) { //
             this.recetteSelected = recette;
+            this.searchWine(this.recetteSelected);
+            this.searchVideo(this.recetteSelected);
 
         }
     }

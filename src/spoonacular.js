@@ -1,4 +1,4 @@
-const API_KEY = 'd87e3bbac77a48a8a67f20c6e36ad192'
+const API_KEY = '6d0524f3b17449c4bf5203390f8d3100'
 
 const useCuisineApi = {
 
@@ -58,8 +58,8 @@ const useCuisineApi = {
      */
     getWinePairing : (recette) => new Promise((resolve, reject) => {
         const wineUrl = `https://api.spoonacular.com/food/wine/pairing?apiKey=${API_KEY}&food=`;
+        /*let typeDeCuisine = recette.cuisines;
         recette = recette.extendedIngredients;
-        let typeDeCuisine = recette.cuisines;
         let food
 
         if (typeDeCuisine.length === 1){
@@ -68,8 +68,10 @@ const useCuisineApi = {
             typeDeCuisine = typeDeCuisine.filter(cuisine => cuisine !== "Mediterranean" && cuisine !== "European");
             food = typeDeCuisine[0]
         } else if (typeDeCuisine.length < 1) {
-            //recherche par ingrédient
+            console.log("Pas de cuisine")
         }
+
+
 
         fetch(wineUrl+food)
             .then((response) => response.json())
@@ -78,7 +80,25 @@ const useCuisineApi = {
                     resolve(data)
                 }
             })
-            .catch(error => reject(error))
+            .catch(error => reject(error))*/
+
+        let cuisine = recette.cuisines;
+        let ingredients = recette.extendedIngredients;
+
+        if(cuisine.length > 0) {
+            let food = cuisine[0];
+            if (food.includes(" ")) {
+                food.replace(" ", "%20");
+            }
+            fetch(wineUrl+food)
+                .then((response) => response.json())
+                .then(data => {
+                    if (data.status !== "failure") {
+                        resolve(data)
+                    }
+                })
+                .catch(error => reject(error))
+        }
 
 
     }),
