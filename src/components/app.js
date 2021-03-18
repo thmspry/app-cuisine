@@ -12,7 +12,8 @@ Vue.component('app', {
                         </div>
                         
                         <div id="details">
-                            <detail v-bind:recette="recetteSelected" :wine="wine" :urlVideo="urlVideo" :instructions="instructionRecettes"> </detail>
+                            <detail v-bind:recette="recetteSelected" :wine="wine" :urlVideo="urlVideo" 
+                            :instructions="instructionRecettes" :recetteSimilaire="recetteSimilaire" :widgetEquipment="widgetEquipment"> </detail>
                         </div>
                         
                     </div>
@@ -23,7 +24,9 @@ Vue.component('app', {
             recetteSelected : "",
             wine : "",
             urlVideo : "",
-            instructionRecettes : ""
+            instructionRecettes : "",
+            recetteSimilaire : [],
+            widgetEquipment : "",
         }},
 
     mounted: function() { // Sur le chargement de la page
@@ -56,7 +59,22 @@ Vue.component('app', {
                 this.urlVideo = "https://www.youtube.com/embed/" + r.items[0].id.videoId; // Le lien pour l'iframe
             }).catch(err => console.log("ERROR : search video : ", err))
         },
+        searchWidget : function (recetteID) {
+            useCuisineApi.getWidgetEquipment(recetteID)
+                .then(response => {
+                    console.log(response)
+                    this.widgetEquipment = response;
+                })
+                .catch(error => console.log({"ERROR : search Widget":error}))
+        },
+        searchMoreRecipe : function (recetteID) {
+            useCuisineApi.searchSimilarRecipe(recetteID)
+                .then(response => {
+                    this.recetteSimilaire = response
+                })
+                .catch(error => console.log({"ERROR : search Widget":error}))
 
+        },
         showMore : function (recette) { // Au clic sur showMore
             this.recetteSelected = recette; // La recette qu'on selectionne grâce au showMore
             console.log("Recette courante : ", this.recetteSelected)
@@ -64,7 +82,8 @@ Vue.component('app', {
             // On cherche les infos complémentaires des api grace a la recette courante
             this.searchWine(this.recetteSelected);
             this.searchVideo(this.recetteSelected);
-
+            this.searchWidget(this.recetteSelected.id);
+            this.searchMoreRecipe(this.recetteSelected.id);
         }
     }
 })

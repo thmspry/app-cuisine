@@ -87,6 +87,16 @@ const useCuisineApi = {
 
         if(cuisine.length > 0) {
             let food = cuisine[0];
+            if (cuisine.length === 1){
+                food = cuisine[0]
+            } else if (cuisine.length > 1){
+                cuisine = cuisine.filter(cuisine => cuisine !== "Mediterranean" && cuisine !== "European");
+                food = cuisine[0]
+            } else if (cuisine.length < 1) {
+                console.log("Pas de cuisine")
+                food = ingredients[0]
+            }
+
             if (food.includes(" ")) {
                 food.replace(" ", "%20");
             }
@@ -97,11 +107,37 @@ const useCuisineApi = {
                         resolve(data)
                     }
                 })
-                .catch(error => reject(error))
+                .catch(error => {
+                    console.log(error)
+                    reject(error)
+                })
         }
-
-
     }),
+
+    getWidgetEquipment : (recetteID) => new Promise((resolve, reject) => {
+        const WidgetEquipmentUrl = `https://api.spoonacular.com/recipes/${recetteID}/equipmentWidget?apiKey=${API_KEY}`
+
+        fetch(WidgetEquipmentUrl)
+            .then((response) => response.text())
+            .then(html => {
+                resolve(html)
+            })
+            .catch(error => reject(error));
+    }),
+
+    searchSimilarRecipe : (recetteID) => new Promise((resolve, reject) => {
+        const searchSimilarUrl = `https://api.spoonacular.com/recipes/${recetteID}/similar?apiKey=${API_KEY}`
+        fetch(searchSimilarUrl)
+            .then((response) => response.json())
+            .then(data => {
+                if (data.status !== "failure") {
+                    console.log("searchSimilarRecipe")
+                    console.log(data)
+                    resolve(data)
+                }
+            })
+            .catch(error => reject(error))
+    })
 
 
 };

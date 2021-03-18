@@ -16,6 +16,14 @@ Vue.component('detail', {
         instructions : {
             required: false,
             default: []
+        },
+        recetteSimilaire : {
+            required : false,
+            default: []
+        },
+        widgetEquipment : {
+            requred : false,
+            default : ""
         }
     },
     template: `
@@ -42,8 +50,7 @@ Vue.component('detail', {
                                                         <span v-if="recette.vegetarian">végétarien, </span>
                                                         <span v-else>non végétarien, </span>
                                                         <span v-if="recette.vegan">vegan.</span>
-                                                        <span v-else>non vegan.</span>
-                                                        
+                                                        <span v-else>non vegan.</span>       
                                             </td></tr>
                         </tbody>
                         
@@ -52,8 +59,11 @@ Vue.component('detail', {
                             <instruction v-if="instructions" v-for="instruction in instructions" v-bind:key="instruction.number" v-bind:instruction="instruction"></instruction>
                             <span v-else>Pas d'instruction</span>
                         </div>
+                        
                     </div>
-                    
+                    <div id="equipement">équipement nécessaire pour réaliser cette recette :
+                        <div v-html="widgetEquipment"></div>
+                    </div>
                     <div id="video-yt" v-if="urlVideo">
                         <iframe width="560" height="315" :src="urlVideo" 
                                 frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -62,6 +72,10 @@ Vue.component('detail', {
                         <span>Vidéo de suggestion</span>
                     </div>
                     <span v-else>Aucune vidéo disponible pour cette recette</span>
+                    
+                    <div v-if="recetteSimilaire">Autres recommandations de recette similaire :
+                        <span v-for="recette in recetteSimilaire">{{recette.title}}</span>
+                    </div>
                 </div>
                 <div class="modal-footer">
                   <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
@@ -73,7 +87,7 @@ Vue.component('detail', {
     data : function() {
         return {
             recetteCourante : "",
-            srcVideo :"",
+            srcVideo :""
         }
         },
 })
