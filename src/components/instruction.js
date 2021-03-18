@@ -2,7 +2,7 @@ Vue.component('instruction', {
     props: ["instruction"],
     template: `
     <div class="instruction-solo">
-        <p class="step-number">{{instruction.number}}</p>
-        <p class="step-instruction">{{instruction.step}}</p>
+        <span class="step-number">{{instruction.number}}</span>
+        <span class="step-instruction">{{instruction.step}}</span>
     </div>`,
 })

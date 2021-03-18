@@ -59,8 +59,9 @@ Vue.component('detail', {
                                 frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                                 allowfullscreen>
                         </iframe>
-                        <span v-if="urlVideo">Vidéo de suggestion</span>
+                        <span>Vidéo de suggestion</span>
                     </div>
+                    <span v-else>Aucune vidéo disponible pour cette recette</span>
                 </div>
                 <div class="modal-footer">
                   <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
@@ -73,7 +74,6 @@ Vue.component('detail', {
         return {
             recetteCourante : "",
             srcVideo :"",
-            noVideo : false,
         }
         },
 })

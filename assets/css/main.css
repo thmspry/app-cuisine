@@ -100,6 +100,7 @@ header p {
 .modal-content p {
     align-items: center;
     margin-bottom: 20px;
+    font-size: 25px;
 }
 
 .details-text {
@@ -149,9 +150,11 @@ header p {
     display: flex;
     flex-flow: column;
     align-items: center;
+    width: 100%;
+    margin-top: 20px;
 }
 
-#video-yt iframe {
+#video-yt iframe{
     width: 100%;
 }
 

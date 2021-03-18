@@ -33,6 +33,17 @@ document.addEventListener('DOMContentLoaded', function() {
             arrow.setAttribute("class", "rotate-180-down");
 
         }
-
     });
+
+    /*let checkboxes = document.querySelectorAll(".filled-in");
+    if (localStorage.getItem('intolerances') != null) {
+        let intolerances = localStorage.getItem("intolerances")
+        checkboxes.forEach(c => {
+            //console.log("On est sur la cb",c.getAttribute("id"))
+            if(intolerances[c.getAttribute("id")] === true) {
+                c.setAttribute("checked", "checked");
+            }
+        })
+    }*/
+
 });
