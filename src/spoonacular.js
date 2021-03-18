@@ -1,4 +1,5 @@
-const API_KEY = '6d0524f3b17449c4bf5203390f8d3100'
+//const API_KEY = '6d0524f3b17449c4bf5203390f8d3100'
+const API_KEY = 'a4aa01c0da0e4a81b3e120771779e4bf'
 
 const useCuisineApi = {
 
@@ -43,14 +44,11 @@ const useCuisineApi = {
      */
     getRandom: () => new Promise((resolve, reject) => {
         const randomRecettes= `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=9`;
-        fetch(randomRecettes).
-        then((response) => response.json()).
-        then(data => {
-            resolve(data);
-        }).
-        catch(error => reject(error));
+        fetch(randomRecettes)
+            .then((response) => response.json())
+            .then(data => resolve(data))
+            .catch(error => reject(error));
     }),
-
     /**
      * Donne un vins qui se marie bien avec la recette
      * @param recette : Un objet recette
@@ -131,9 +129,8 @@ const useCuisineApi = {
             .then((response) => response.json())
             .then(data => {
                 if (data.status !== "failure") {
-                    console.log("searchSimilarRecipe")
-                    console.log(data)
-                    resolve(data)
+                    console.log(data);
+                    resolve(data);
                 }
             })
             .catch(error => reject(error))

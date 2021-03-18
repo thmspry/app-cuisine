@@ -73,8 +73,12 @@ Vue.component('detail', {
                     </div>
                     <span v-else>Aucune vidéo disponible pour cette recette</span>
                     
-                    <div v-if="recetteSimilaire">Autres recommandations de recette similaire :
-                        <span v-for="recette in recetteSimilaire">{{recette.title}}</span>
+                    <div v-if="recetteSimilaire">Autres recommandations de recette similaire :<br>
+                        <div v-for="recette in recetteSimilaire" > 
+                            <a target="_blank" rel="noopener noreferrer" :src="recette.sourceUrl">{{recette.title}} {{recette.image}}</a>  
+                            <img :src="recette.image" alt="pas d'image"><br>
+                            <!-- recette.image n'existe pas et la balise a ne fonctionne pas et ne redirige nul part--> 
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

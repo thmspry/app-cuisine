@@ -35,9 +35,11 @@ Vue.component('app', {
 
     methods: {
         init : function () { // Cet init permet d'afficher au chargement des recettes au hasard
-            useCuisineApi.getRandom().then(recettesRandom => {
+            useCuisineApi.getRandom()
+                .then(recettesRandom => {
                 this.recettes = recettesRandom.recipes;
-            });
+            })
+                .catch(error => console.log(error));
         },
 
         searchIsOver : function (recettes) { // La recherche pest finie
@@ -47,14 +49,12 @@ Vue.component('app', {
         },
 
         searchWine : function (recette) { // Cherche un vin
-            useCuisineApi.getWinePairing(recette).then(r => {
-                this.wine = r;
-            }).catch(error => console.log("ERROR : search wine : ", error));
+            useCuisineApi.getWinePairing(recette)
+                .then(r => {this.wine = r})
+                .catch(error => console.log("ERROR : search wine : ", error));
         },
-
         searchVideo : function (recette) { // Cherche une video
             let query = recette.title.split(" "); // On récupère le titre de la recette, mot par mot dans un array
-
             useYoutubeApi.searchOnMichelDumasChannel(query).then(r => { // On cherche une vidéo correspondante
                 this.urlVideo = "https://www.youtube.com/embed/" + r.items[0].id.videoId; // Le lien pour l'iframe
             }).catch(err => console.log("ERROR : search video : ", err))
@@ -62,7 +62,6 @@ Vue.component('app', {
         searchWidget : function (recetteID) {
             useCuisineApi.getWidgetEquipment(recetteID)
                 .then(response => {
-                    console.log(response)
                     this.widgetEquipment = response;
                 })
                 .catch(error => console.log({"ERROR : search Widget":error}))

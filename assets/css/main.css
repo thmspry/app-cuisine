@@ -273,3 +273,20 @@ input[type=text]:not(.browser-default):focus:not([readonly]) {
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating):hover {
     color: #8896e2;
 }
+
+.spoonacular-ingredients-menu, #spoonacular-equipment-vis-list, #spoonacular-equipment-vis-list + div {
+    display: none;
+}
+
+#spoonacular-equipment-vis-grid {
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+
+}
+.spoonacular-equipment div img, .spoonacular-equipment div {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+}
