@@ -31,7 +31,7 @@ Vue.component('detail', {
                     <p> {{recette.title}}</p>
                     <div class="details-text">
                         <tbody>
-                            <tr> <td>Vin recommandé : </td> <td> <span v-if="wine.pairedWines">{{wine.pairedWines}}</span> 
+                            <tr> <td>Vin recommandé : </td> <td> <span v-if="wine.pairedWines"><span v-for="w in wine.pairedWines">{{w}}, </span></span> 
                                                                  <span v-else>Pas de vin(s) disponible(s)</span>
                                                             </td>
                             </tr>
@@ -52,10 +52,7 @@ Vue.component('detail', {
                                                         <span v-if="recette.vegan">vegan.</span>
                                                         <span v-else>non vegan.</span>       
                                             </td></tr>
-                            <tr> 
-                                <td>
-                                    équipement nécessaire :
-                                </td>
+                            <tr> <td>Équipement nécessaire :</td>
                                 <td>
                                     <div v-html="widgetEquipment"></div>
                                 </td>
@@ -64,31 +61,29 @@ Vue.component('detail', {
                         
                         <div id="instructions">
                             <p>Instructions : </p>
-                            <!---<instruction v-if="instructions" v-for="instruction in instructions" v-bind:key="instruction.number" v-bind:instruction="instruction"></instruction>--->
                             <div v-if="instructions" v-for="instruction in instructions" v-bind:key="instruction.number" class="instruction-solo">
                                 <span class="step-number">{{instruction.number}}</span>
                                 <span class="step-instruction">{{instruction.step}}</span>
                             </div>
-                            <span v-else>Pas d'instruction</span>
+                            <span v-else>Pas d'instructions</span>
                             <div id="image">
                                 <img id="img1" src="assets/image/camera.png">
                                 <img id="img2" :src="recette.image">
                            </div>
                             </div>
                     </div>
-                    <div id="video-yt" v-if="urlVideo">
+                    <div class="video-result" id="video-yt" v-if="urlVideo">
                         <iframe width="560" height="600" :src="urlVideo" 
                                 frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                                 allowfullscreen>
                         </iframe>
                         <span>Vidéo de suggestion</span>
                     </div>
-                    <span v-else>Aucune vidéo disponible pour cette recette</span>
+                    <span class="video-result" v-else>Aucune vidéo disponible pour cette recette</span>
                     
-                    <div v-if="recetteSimilaire">Autres recommandations de recette similaire :<br>
-                        <div v-for="recette in recetteSimilaire" > 
-                            <a @click="showMorebyId(recette.id)" href="#modal-detail">{{recette.title}} {{recette.id}}</a>  
-                            <!-- recette.image n'existe pas et la balise a ne fonctionne pas et ne redirige nul part--> 
+                    <div class="grid-similaire" v-if="recetteSimilaire">Autres recommandations de recettes similaires :<br>
+                        <div class="recette-simi" v-for="recette in recetteSimilaire" > 
+                            <a @click="showMorebyId(recette.id)" href="#modal-detail">{{recette.title}}</a>  
                         </div>
                     </div>
                 </div>
@@ -96,16 +91,8 @@ Vue.component('detail', {
                   <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fermer</a>
                 </div>
             </div>`,
-    updated : function () {
-        //console.log("Je suis UPDATED");
-        },
-    data : function() {
-        return {
-            recetteCourante : "",
-            srcVideo :""
-        }
-        },
-        methods: {
+
+    methods: {
         showMorebyId : function (recetteID) {
              this.$emit('showMorebyId-event', recetteID)
         }
