@@ -13,7 +13,8 @@ Vue.component('app', {
                         
                         <div id="details">
                             <detail v-bind:recette="recetteSelected" :wine="wine" :urlVideo="urlVideo" 
-                            :instructions="instructionRecettes" :recetteSimilaire="recetteSimilaire" :widgetEquipment="widgetEquipment"> </detail>
+                            :instructions="instructionRecettes" :recetteSimilaire="recetteSimilaire" :widgetEquipment="widgetEquipment"
+                            @showMorebyId-event="showMorebyId"> </detail>
                         </div>
                         
                     </div>
@@ -74,15 +75,42 @@ Vue.component('app', {
                 .catch(error => console.log({"ERROR : search Widget":error}))
 
         },
-        showMore : function (recette) { // Au clic sur showMore
+        /**
+         * Fonction async car await usecui, expliquer...
+         * @param recette
+         * @returns {Promise<void>}
+         */
+        showMore : async function (recette) { // Au clic sur showMore
             this.recetteSelected = recette; // La recette qu'on selectionne grâce au showMore
+            if (recette.analyzedInstructions === undefined) {
+                await useCuisineApi.getRecipeById(recette.id)
+                    .then(recette => this.recetteSelected = recette)
+                    .catch(error => console.log(error));
+            }
             console.log("Recette courante : ", this.recetteSelected)
-            this.instructionRecettes = recette.analyzedInstructions[0].steps; // Ses instruction
+
+            this.instructionRecettes = this.recetteSelected.analyzedInstructions[0].steps; // Ses instruction
             // On cherche les infos complémentaires des api grace a la recette courante
             this.searchWine(this.recetteSelected);
             this.searchVideo(this.recetteSelected);
             this.searchWidget(this.recetteSelected.id);
             this.searchMoreRecipe(this.recetteSelected.id);
+        },
+
+        showMorebyId : function (recetteID) {
+            useCuisineApi.getRecipeById(recetteID)
+                .then(recette => {
+                    this.recetteSelected = recette;
+                    console.log("Recette courante : ", this.recetteSelected)
+                    this.instructionRecettes = recette.analyzedInstructions[0].steps; // Ses instruction
+                    // On cherche les infos complémentaires des api grace a la recette courante
+                    this.searchWine(this.recetteSelected);
+                    this.searchVideo(this.recetteSelected);
+                    this.searchWidget(this.recetteSelected.id);
+                    this.searchMoreRecipe(this.recetteSelected.id);
+
+                })
+                .catch(error => console.log(error))
         }
     }
 })

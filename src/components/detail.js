@@ -1,4 +1,3 @@
-
 Vue.component('detail', {
     props: {
         recette : {
@@ -53,6 +52,14 @@ Vue.component('detail', {
                                                         <span v-if="recette.vegan">vegan.</span>
                                                         <span v-else>non vegan.</span>       
                                             </td></tr>
+                            <tr> 
+                                <td>
+                                    équipement nécessaire :
+                                </td>
+                                <td>
+                                    <div v-html="widgetEquipment"></div>
+                                </td>
+                            </tr>
                         </tbody>
                         
                         <div id="instructions">
@@ -63,11 +70,11 @@ Vue.component('detail', {
                                 <span class="step-instruction">{{instruction.step}}</span>
                             </div>
                             <span v-else>Pas d'instruction</span>
-                        </div>
-                        
-                    </div>
-                    <div id="equipement">équipement nécessaire pour réaliser cette recette :
-                        <div v-html="widgetEquipment"></div>
+                            <div id="image">
+                                <img id="img1" src="assets/image/camera.png">
+                                <img id="img2" :src="recette.image">
+                           </div>
+                            </div>
                     </div>
                     <div id="video-yt" v-if="urlVideo">
                         <iframe width="560" height="600" :src="urlVideo" 
@@ -80,8 +87,7 @@ Vue.component('detail', {
                     
                     <div v-if="recetteSimilaire">Autres recommandations de recette similaire :<br>
                         <div v-for="recette in recetteSimilaire" > 
-                            <a target="_blank" rel="noopener noreferrer" :src="recette.sourceUrl">{{recette.title}} {{recette.image}}</a>  
-                            <img :src="recette.image" alt="pas d'image"><br>
+                            <a @click="showMorebyId(recette.id)" href="#modal-detail">{{recette.title}} {{recette.id}}</a>  
                             <!-- recette.image n'existe pas et la balise a ne fonctionne pas et ne redirige nul part--> 
                         </div>
                     </div>
@@ -99,4 +105,9 @@ Vue.component('detail', {
             srcVideo :""
         }
         },
+        methods: {
+        showMorebyId : function (recetteID) {
+             this.$emit('showMorebyId-event', recetteID)
+        }
+    },
 })

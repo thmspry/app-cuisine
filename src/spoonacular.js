@@ -1,5 +1,6 @@
 //const API_KEY = '6d0524f3b17449c4bf5203390f8d3100'
-const API_KEY = 'a4aa01c0da0e4a81b3e120771779e4bf'
+//const API_KEY = 'a4aa01c0da0e4a81b3e120771779e4bf'
+const API_KEY = 'ace5cda7746e49d9b4ae20ae6f34f9eb'
 
 const useCuisineApi = {
 
@@ -56,29 +57,6 @@ const useCuisineApi = {
      */
     getWinePairing : (recette) => new Promise((resolve, reject) => {
         const wineUrl = `https://api.spoonacular.com/food/wine/pairing?apiKey=${API_KEY}&food=`;
-        /*let typeDeCuisine = recette.cuisines;
-        recette = recette.extendedIngredients;
-        let food
-
-        if (typeDeCuisine.length === 1){
-            food = typeDeCuisine[0]
-        } else if (typeDeCuisine.length > 1){
-            typeDeCuisine = typeDeCuisine.filter(cuisine => cuisine !== "Mediterranean" && cuisine !== "European");
-            food = typeDeCuisine[0]
-        } else if (typeDeCuisine.length < 1) {
-            console.log("Pas de cuisine")
-        }
-
-
-
-        fetch(wineUrl+food)
-            .then((response) => response.json())
-            .then(data => {
-                if (data.status !== "failure") {
-                    resolve(data)
-                }
-            })
-            .catch(error => reject(error))*/
 
         let cuisine = recette.cuisines;
         let ingredients = recette.extendedIngredients;
@@ -131,6 +109,17 @@ const useCuisineApi = {
                 if (data.status !== "failure") {
                     console.log(data);
                     resolve(data);
+                }
+            })
+            .catch(error => reject(error))
+    }),
+    getRecipeById: (recetteID) => new Promise((resolve,reject) => {
+        const searchRecipeById = `https://api.spoonacular.com/recipes/${recetteID}/information?apiKey=${API_KEY}`
+        fetch(searchRecipeById)
+            .then((response) => response.json())
+            .then(data => {
+                if (data.status !== "failure"){
+                    resolve(data)
                 }
             })
             .catch(error => reject(error))

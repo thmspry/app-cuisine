@@ -286,12 +286,40 @@ input[type=text]:not(.browser-default):focus:not([readonly]) {
 #spoonacular-equipment-vis-grid {
     display: flex;
     justify-content: space-around;
-    align-content: center;
+    align-items: center;
+    flex-flow: row;
+    flex-wrap: wrap;
 
 }
+#spoonacular-equipment-vis-grid div {
+    height: 100%;
+}
+
+.spoonacular-equipment {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+}
+
+
 .spoonacular-equipment div img, .spoonacular-equipment div {
     margin-left: auto;
     margin-right: auto;
     display: block;
     text-align: center;
+}
+
+div#image {
+    display: flex;
+    align-items: center;
+}
+
+#img1 {
+    width: 20px;
+    height: 20px;
+}
+#img2 {
+    margin: 5px;
+    border-left: #ed2939 solid 2px;
+    padding: 5px;
 }
