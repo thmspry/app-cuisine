@@ -91,6 +91,11 @@ header p {
     justify-content: space-between;
 }
 
+.modal {
+    max-height: 85%;
+    width: 80%;
+}
+
 .modal-content {
     display: flex;
     flex-flow: column;

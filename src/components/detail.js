@@ -22,7 +22,7 @@ Vue.component('detail', {
             default: []
         },
         widgetEquipment : {
-            requred : false,
+            required : false,
             default : ""
         }
     },
@@ -34,7 +34,8 @@ Vue.component('detail', {
                         <tbody>
                             <tr> <td>Vin recommandé : </td> <td> <span v-if="wine.pairedWines">{{wine.pairedWines}}</span> 
                                                                  <span v-else>Pas de vin(s) disponible(s)</span>
-                                                                 </td></tr>
+                                                            </td>
+                            </tr>
                             <tr> <td>Ingredients : </td> <td> <span v-for="ing in recette.extendedIngredients">{{ing.name}} ({{ing.measures.metric.amount}} {{ing.measures.metric.unitShort}}), </span> </td></tr>
                             <tr> <td>Note : </td> <td> {{recette.aggregateLikes}}</td></tr>
                             <tr> <td>Weight Watcher Smart Points : </td> <td> {{recette.weightWatcherSmartPoints}}</td></tr>
@@ -56,7 +57,11 @@ Vue.component('detail', {
                         
                         <div id="instructions">
                             <p>Instructions : </p>
-                            <instruction v-if="instructions" v-for="instruction in instructions" v-bind:key="instruction.number" v-bind:instruction="instruction"></instruction>
+                            <!---<instruction v-if="instructions" v-for="instruction in instructions" v-bind:key="instruction.number" v-bind:instruction="instruction"></instruction>--->
+                            <div v-if="instructions" v-for="instruction in instructions" v-bind:key="instruction.number" class="instruction-solo">
+                                <span class="step-number">{{instruction.number}}</span>
+                                <span class="step-instruction">{{instruction.step}}</span>
+                            </div>
                             <span v-else>Pas d'instruction</span>
                         </div>
                         
@@ -65,7 +70,7 @@ Vue.component('detail', {
                         <div v-html="widgetEquipment"></div>
                     </div>
                     <div id="video-yt" v-if="urlVideo">
-                        <iframe width="560" height="315" :src="urlVideo" 
+                        <iframe width="560" height="600" :src="urlVideo" 
                                 frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                                 allowfullscreen>
                         </iframe>
@@ -86,7 +91,7 @@ Vue.component('detail', {
                 </div>
             </div>`,
     updated : function () {
-        console.log("Je suis UPDATED");
+        //console.log("Je suis UPDATED");
         },
     data : function() {
         return {
