@@ -12,10 +12,6 @@ Vue.component('detail', {
             required: false,
             default: ""
         },
-        instructions : {
-            required: false,
-            default: []
-        },
         recetteSimilaire : {
             required : false,
             default: []
@@ -61,7 +57,7 @@ Vue.component('detail', {
                         
                         <div id="instructions">
                             <p>Instructions : </p>
-                            <div v-if="instructions" v-for="instruction in instructions" v-bind:key="instruction.number" class="instruction-solo">
+                            <div v-if="recette.instructions" v-for="instruction in recette.instructions" v-bind:key="instruction.number" class="instruction-solo">
                                 <span class="step-number">{{instruction.number}}</span>
                                 <span class="step-instruction">{{instruction.step}}</span>
                             </div>

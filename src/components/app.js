@@ -16,7 +16,7 @@ Vue.component('app', {
                         
                         <div id="details">
                             <detail v-bind:recette="recetteSelected" :wine="wine" :urlVideo="urlVideo" 
-                            :instructions="instructionRecettes" :recetteSimilaire="recetteSimilaire" :widgetEquipment="widgetEquipment"
+                            :recetteSimilaire="recetteSimilaire" :widgetEquipment="widgetEquipment"
                             @showMorebyId-event="showMorebyId"> </detail>
                         </div>
                         
@@ -29,7 +29,6 @@ Vue.component('app', {
             historiqueRecette : [],
             wine : "",
             urlVideo : "",
-            instructionRecettes : "",
             recetteSimilaire : [],
             widgetEquipment : "",
         }},
@@ -107,13 +106,13 @@ Vue.component('app', {
             console.log("Recette courante : ", this.recetteSelected)
 
             // Les instruction sont stockée a part du l'objet recetteSelected car l'objet est mal fait (array analyzedInstructions)
-            this.instructionRecettes = this.recetteSelected.analyzedInstructions[0].steps;
+            let instructions = this.recetteSelected.analyzedInstructions[0].steps;
             if (this.recetteSelected.analyzedInstructions.length !== 0) { // dans le cas où la recette ne possède pas de liste d'instruction
-                this.instructionRecettes = this.recetteSelected.analyzedInstructions[0].steps; // Ses instruction
+                instructions = this.recetteSelected.analyzedInstructions[0].steps; // Ses instruction
             } else {
-                this.instructionRecettes = null
+                instructions = null
             }
-
+            this.recetteSelected.instructions = instructions;
             this.historiqueRecette.push(this.recetteSelected);
             let json = JSON.stringify(this.historiqueRecette);
             localStorage.setItem("historique", json)
@@ -135,7 +134,7 @@ Vue.component('app', {
                 .then(recette => {
                     this.recetteSelected = recette;
                     console.log("Recette courante : ", this.recetteSelected)
-                    this.instructionRecettes = recette.analyzedInstructions[0].steps; // Ses instructions
+                    this.recetteSelected.instructions = recette.analyzedInstructions[0].steps; // Ses instructions
 
                     this.historiqueRecette.push(this.recetteSelected);
                     let json = JSON.stringify(this.historiqueRecette);
