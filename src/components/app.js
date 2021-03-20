@@ -16,17 +16,16 @@ Vue.component('app', {
                             <div id="recettes-apercu" class="grid-recettes">
                                 <recette v-if="recettes" v-for="recette in recettes" v-bind:key="recette.id" v-bind:recette="recette" @showMore-event="showMore"> </recette>
                             </div>
-
-                            <div id="details">
-                                <detail v-bind:recette="recetteSelected" :wine="wine" :urlVideo="urlVideo" 
-                                :recetteSimilaire="recetteSimilaire" :widgetEquipment="widgetEquipment"
-                                @showMorebyId-event="showMorebyId"> </detail>
-                            </div>
                         </div>
                     </div>
                     <div id="historique" class="col s12">
-                        <historique v-if="historiqueRecette" v-bind:historique="historiqueRecette"></historique>
+                        <historique v-if="historiqueRecette" v-bind:historique="historiqueRecette" @showMore-event="showMore"></historique>
                     </div>
+                    <div id="details">
+                                <detail v-bind:recette="recetteSelected" :wine="wine" :urlVideo="urlVideo" 
+                                :recetteSimilaire="recetteSimilaire" :widgetEquipment="widgetEquipment"
+                                @showMorebyId-event="showMorebyId"> </detail>
+                   </div>
                </div>`,
     data : function () {
         return {
@@ -99,13 +98,16 @@ Vue.component('app', {
             this.widgetEquipment = "";
             this.recetteSimilaire = "";
 
-            this.recetteSelected = this.getRecettePropre(recette)
+            if (recette.propre === undefined) {
+                this.recetteSelected = this.getRecettePropre(recette)
+            }
             console.log("recetteSelected :", this.recetteSelected)
+            console.log("recetteSelected :", this.recetteSelected.title)
 
             if (this.recetteSelected !== null) {
                 let histoID = this.historiqueRecette.map(recette => recette.id)
                 if (histoID.find(id => id === this.recetteSelected.id) === undefined) {
-                    this.historiqueRecette.push(this.recetteSelected);
+                    this.historiqueRecette.unshift(this.recetteSelected);
                     let json = JSON.stringify(this.historiqueRecette);
                     localStorage.setItem("historique", json)
                 }
@@ -129,7 +131,7 @@ Vue.component('app', {
             if (this.recetteSelected !== null) {
                 let histoID = this.historiqueRecette.map(recette => recette.id)
                 if (histoID.find(id => id === this.recetteSelected.id) === undefined) {
-                    this.historiqueRecette.push(this.recetteSelected);
+                    this.historiqueRecette.unshift(this.recetteSelected);
                     let json = JSON.stringify(this.historiqueRecette);
                     localStorage.setItem("historique", json)
                 }
@@ -171,6 +173,7 @@ Vue.component('app', {
                 vegetarian:recette.vegetarian,
                 vegan:recette.vegan,
                 title:recette.title,
+                summary : recette.summary,
                 aggregateLikes:recette.aggregateLikes,
                 weightWatcherSmartPoints:recette.weightWatcherSmartPoints,
             }
