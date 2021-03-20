@@ -45,6 +45,10 @@ Vue.component('app', {
                 this.recettes = recettesRandom.recipes;
             })
                 .catch(error => console.log(error));
+
+            if(localStorage.getItem("historique") != null) {
+                this.historiqueRecette = JSON.parse(localStorage.getItem('historique'))
+            }
         },
 
         searchIsOver : function (recettes) { // La recherche est finie
@@ -91,6 +95,7 @@ Vue.component('app', {
             this.widgetEquipment = "";
             this.recetteSimilaire = "";
 
+
             this.recetteSelected = recette; // La recette qu'on selectionne grâce au showMore
 
             // Si la recette est selectionée suite à une recherche, l'objet ne comporte pas d'instruction de réalisation de la recette
@@ -108,8 +113,12 @@ Vue.component('app', {
             } else {
                 this.instructionRecettes = null
             }
-            this.historiqueRecette.push(this.recetteSelected)
+
+            this.historiqueRecette.push(this.recetteSelected);
+            let json = JSON.stringify(this.historiqueRecette);
+            localStorage.setItem("historique", json)
             // On cherche les infos complémentaires des api grace a la recette courante
+            //this.historiqueStorage(this.recetteSelected);
             this.searchWine(this.recetteSelected);
             this.searchVideo(this.recetteSelected);
             this.searchWidget(this.recetteSelected.id);
@@ -128,8 +137,11 @@ Vue.component('app', {
                     console.log("Recette courante : ", this.recetteSelected)
                     this.instructionRecettes = recette.analyzedInstructions[0].steps; // Ses instructions
 
+                    this.historiqueRecette.push(this.recetteSelected);
+                    let json = JSON.stringify(this.historiqueRecette);
+                    localStorage.setItem("historique", json);
+
                     // On cherche les infos complémentaires des api grace a la recette courante
-                    this.historiqueRecette.push(this.recetteSelected)
                     this.searchWine(this.recetteSelected);
                     this.searchVideo(this.recetteSelected);
                     this.searchWidget(this.recetteSelected.id);
@@ -137,6 +149,6 @@ Vue.component('app', {
 
                 })
                 .catch(error => console.log({"ERROR : getRecipeById":error}))
-        }
+        },
     }
 })
