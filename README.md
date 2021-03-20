@@ -1,4 +1,10 @@
 #Devoir maison
+
+- L'application fonctionne sous Vue.js, avec l'aide de Materialize
+- Elle utilise la persistance locale
+- Pour un bon fonctionnement, insérez votre clé d'API Spoonacular et YouTube dans spoonacular.js et youtubeApi.js (des clés sont déjà fournies mais elles ne sont peut-être plus dans la limite du quota autorisé)
+
+Énoncé : 
 "La date de rendu et les modalités de rendu sont à définir avec votre enseignant de TP, vous devez proposer un
 client riche portant sur https://spoonacular.com/food-api. 
 

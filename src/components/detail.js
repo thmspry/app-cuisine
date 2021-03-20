@@ -31,7 +31,7 @@ Vue.component('detail', {
                                                                  <span v-else>Pas de vin(s) disponible(s)</span>
                                                             </td>
                             </tr>
-                            <tr> <td>Ingredients : </td> <td> <span v-for="ing in recette.extendedIngredients">{{ing.name}} ({{ing.measures.metric.amount}} {{ing.measures.metric.unitShort}}), </span> </td></tr>
+                            <tr> <td>Ingredients : </td> <td> <span v-for="ing in recette.extendedIngredients">{{ing.name}} ({{ing.measures.metric.amount}}<span v-if="ing.measures.metric.unitShort"> {{ing.measures.metric.unitShort}}</span>), </span> </td></tr>
                             <tr> <td>Note : </td> <td> {{recette.aggregateLikes}}</td></tr>
                             <tr> <td>Weight Watcher Smart Points : </td> <td> {{recette.weightWatcherSmartPoints}}</td></tr>
                             <tr> <td>Caractèristiques : </td> <td> 
