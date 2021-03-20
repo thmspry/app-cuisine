@@ -19,7 +19,7 @@ Vue.component('app', {
 
                             <div id="details">
                                 <detail v-bind:recette="recetteSelected" :wine="wine" :urlVideo="urlVideo" 
-                                :instructions="instructionRecettes" :recetteSimilaire="recetteSimilaire" :widgetEquipment="widgetEquipment"
+                                :recetteSimilaire="recetteSimilaire" :widgetEquipment="widgetEquipment"
                                 @showMorebyId-event="showMorebyId"> </detail>
                             </div>
                         </div>
@@ -50,7 +50,7 @@ Vue.component('app', {
                 this.recettes = recettesRandom.recipes;
             })
                 .catch(error => console.log(error));
-
+            localStorage.removeItem("historique")
             if(localStorage.getItem("historique") != null) {
                 this.historiqueRecette = JSON.parse(localStorage.getItem('historique'))
             }
@@ -93,42 +93,29 @@ Vue.component('app', {
          * @param recette : recette selectionnée
          * @returns {Promise<void>}
          */
-        showMore : async function (recette) {
+        showMore : function (recette) {
             // On reset les caractéristique pour être sûr
             this.wine = [];
             this.urlVideo = "";
             this.widgetEquipment = "";
             this.recetteSimilaire = "";
 
+            this.recetteSelected = this.getRecettePropre(recette)
+            console.log("recetteSelected :", this.recetteSelected)
+            console.log("recetteSelected :", this.recetteSelected.title)
 
-            this.recetteSelected = recette; // La recette qu'on selectionne grâce au showMore
-
-            // Si la recette est selectionée suite à une recherche, l'objet ne comporte pas d'instruction de réalisation de la recette
-            if (recette.analyzedInstructions === undefined) {
-                await useCuisineApi.getRecipeById(recette.id)   // On va donc cherche l'objet complet avec la méthode
-                    .then(recette => this.recetteSelected = recette)
-                    .catch(error => console.log({"ERROR : showMore":error}));
+            if (this.recetteSelected !== null) {
+                this.historiqueRecette.push(this.recetteSelected);
+                let json = JSON.stringify(this.historiqueRecette);
+                localStorage.setItem("historique", json)
+                // On cherche les infos complémentaires des api grace a la recette courante
+                //this.historiqueStorage(this.recetteSelected);
+                this.searchWine(this.recetteSelected);
+                this.searchVideo(this.recetteSelected);
+                this.searchWidget(this.recetteSelected.id);
+                this.searchMoreRecipe(this.recetteSelected.id);
             }
-            console.log("Recette courante : ", this.recetteSelected)
-
-            // Les instruction sont stockée a part du l'objet recetteSelected car l'objet est mal fait (array analyzedInstructions)
-            let instructions = this.recetteSelected.analyzedInstructions[0].steps;
-            if (this.recetteSelected.analyzedInstructions.length !== 0) { // dans le cas où la recette ne possède pas de liste d'instruction
-                instructions = this.recetteSelected.analyzedInstructions[0].steps; // Ses instruction
-            } else {
-                instructions = null
-            }
-            this.recetteSelected.instructions = instructions;
-            this.historiqueRecette.push(this.recetteSelected);
-            let json = JSON.stringify(this.historiqueRecette);
-            localStorage.setItem("historique", json)
-            // On cherche les infos complémentaires des api grace a la recette courante
-            //this.historiqueStorage(this.recetteSelected);
-            this.searchWine(this.recetteSelected);
-            this.searchVideo(this.recetteSelected);
-            this.searchWidget(this.recetteSelected.id);
-            this.searchMoreRecipe(this.recetteSelected.id);
-        },
+            },
 
         /**
          * Ouverture des détail d'une recette à partir du click sur une recette similaire dans détail
@@ -136,24 +123,55 @@ Vue.component('app', {
          */
         showMorebyId : function (recetteID) {
 
-            useCuisineApi.getRecipeById(recetteID)
-                .then(recette => {
-                    this.recetteSelected = recette;
-                    console.log("Recette courante : ", this.recetteSelected)
-                    this.recetteSelected.instructions = recette.analyzedInstructions[0].steps; // Ses instructions
+            this.recetteSelected = this.getRecettePropre(null)
 
-                    this.historiqueRecette.push(this.recetteSelected);
-                    let json = JSON.stringify(this.historiqueRecette);
-                    localStorage.setItem("historique", json);
+            if (this.recetteSelected !== null) {
+                this.historiqueRecette.push(this.recetteSelected);
+                let json = JSON.stringify(this.historiqueRecette);
+                localStorage.setItem("historique", json);
 
-                    // On cherche les infos complémentaires des api grace a la recette courante
-                    this.searchWine(this.recetteSelected);
-                    this.searchVideo(this.recetteSelected);
-                    this.searchWidget(this.recetteSelected.id);
-                    this.searchMoreRecipe(this.recetteSelected.id);
-
-                })
-                .catch(error => console.log({"ERROR : getRecipeById":error}))
+                // On cherche les infos complémentaires des api grace a la recette courante
+                this.searchWine(this.recetteSelected);
+                this.searchVideo(this.recetteSelected);
+                this.searchWidget(this.recetteSelected.id);
+                this.searchMoreRecipe(this.recetteSelected.id);
+            }
         },
+        getRecettePropre :  function (recette) {
+            let recettePropre = "";
+
+            // Si la recette est selectionée suite à une recherche, l'objet ne comporte pas d'instruction de réalisation de la recette
+            if (recette === null || recette.analyzedInstructions === undefined) {
+                useCuisineApi.getRecipeById(recette.id)   // On va donc cherche l'objet complet avec la méthode
+                    .then(recetteFind => recette = recetteFind)
+                    .catch(error => {
+                        console.log({"ERROR : showMore":error})
+                        return null
+                    });
+            }
+
+            recettePropre = {
+                id:recette.id,
+                image:recette.image,
+                cuisines:recette.cuisines,
+                extendedIngredients:recette.extendedIngredients,
+                cheap:recette.cheap,
+                glutenFree:recette.glutenFree,
+                veryPopular:recette.veryPopular,
+                veryHealthy:recette.veryHealthy,
+                vegetarian:recette.vegetarian,
+                vegan:recette.vegan,
+                title:recette.title,
+                aggregateLikes:recette.aggregateLikes,
+                weightWatcherSmartPoints:recette.weightWatcherSmartPoints,
+            }
+            if (recette.analyzedInstructions.length === 0) {
+                recettePropre.instructions = null;
+            } else {
+                recettePropre.instructions = recette.analyzedInstructions[0].steps;
+            }
+
+            return recettePropre;
+        }
     }
 })
