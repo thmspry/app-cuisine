@@ -11,6 +11,9 @@ Vue.component('app', {
                             <recette v-if="recettes" v-for="recette in recettes" v-bind:key="recette.id" v-bind:recette="recette" @showMore-event="showMore"> </recette>
                         </div>
                         
+                        <historique v-if="historiqueRecette" v-bind:historique="historiqueRecette"></historique>
+                      
+                        
                         <div id="details">
                             <detail v-bind:recette="recetteSelected" :wine="wine" :urlVideo="urlVideo" 
                             :instructions="instructionRecettes" :recetteSimilaire="recetteSimilaire" :widgetEquipment="widgetEquipment"
@@ -23,6 +26,7 @@ Vue.component('app', {
         return {
             recettes : [],
             recetteSelected : "",
+            historiqueRecette : [],
             wine : "",
             urlVideo : "",
             instructionRecettes : "",
@@ -104,6 +108,7 @@ Vue.component('app', {
             } else {
                 this.instructionRecettes = null
             }
+            this.historiqueRecette.push(this.recetteSelected)
             // On cherche les infos complémentaires des api grace a la recette courante
             this.searchWine(this.recetteSelected);
             this.searchVideo(this.recetteSelected);
@@ -124,6 +129,7 @@ Vue.component('app', {
                     this.instructionRecettes = recette.analyzedInstructions[0].steps; // Ses instructions
 
                     // On cherche les infos complémentaires des api grace a la recette courante
+                    this.historiqueRecette.push(this.recetteSelected)
                     this.searchWine(this.recetteSelected);
                     this.searchVideo(this.recetteSelected);
                     this.searchWidget(this.recetteSelected.id);
