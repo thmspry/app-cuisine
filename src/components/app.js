@@ -92,15 +92,21 @@ Vue.component('app', {
          * @param recette : recette selectionnée
          * @returns {Promise<void>}
          */
-        showMore : function (recette) {
+        showMore : async function (recette) {
+
             // On reset les caractéristique pour être sûr
             this.wine = [];
             this.urlVideo = "";
             this.widgetEquipment = "";
             this.recetteSimilaire = "";
 
-            this.recetteSelected = this.getRecettePropre(recette)
-            console.log("recetteSelected :", this.recetteSelected)
+            if (recette.analyzedInstructions === undefined) {
+                await useCuisineApi.getRecipeById(recette.id)   // On va donc cherche l'objet complet avec la méthode
+                    .then(recette => this.recetteSelected = this.getRecettePropre(recette))
+                    .catch(error => console.log({"ERROR : showMore":error}));
+            } else {
+                this.recetteSelected = this.getRecettePropre(recette)
+            }
 
             if (this.recetteSelected !== null) {
                 let histoID = this.historiqueRecette.map(recette => recette.id)
@@ -122,10 +128,12 @@ Vue.component('app', {
          * Ouverture des détail d'une recette à partir du click sur une recette similaire dans détail
          * @param recetteID : l'id de la recette
          */
-        showMorebyId : function (recetteID) {
-
-            this.recetteSelected = this.getRecettePropre(null)
-
+        showMorebyId : async function (recetteID) {
+            await useCuisineApi.getRecipeById(recetteID)
+                .then(recette => {
+                    this.recetteSelected = this.getRecettePropre(recette);
+                })
+                .catch(error => console.log({"ERROR : showMorebyId":error}));
             if (this.recetteSelected !== null) {
                 let histoID = this.historiqueRecette.map(recette => recette.id)
                 if (histoID.find(id => id === this.recetteSelected.id) === undefined) {
@@ -146,19 +154,8 @@ Vue.component('app', {
          * @param recette
          * @returns {{image: *, veryHealthy, glutenFree, veryPopular, vegan, extendedIngredients, cheap, title: *, aggregateLikes, cuisines, vegetarian, weightWatcherSmartPoints, id}}
          */
-        getRecettePropre :  function (recette) {
+        getRecettePropre : function (recette) {
             let recettePropre = "";
-
-            // Si la recette est selectionée suite à une recherche, l'objet ne comporte pas d'instruction de réalisation de la recette
-            if (recette === null || recette.analyzedInstructions === undefined) {
-                useCuisineApi.getRecipeById(recette.id)   // On va donc cherche l'objet complet avec la méthode
-                    .then(recetteFind => recette = recetteFind)
-                    .catch(error => {
-                        console.log({"ERROR : showMore":error})
-                        return null
-                    });
-            }
-
             recettePropre = { //Ici on récupère uniquement les attributs qui nous intéresse pour notre application
                 id:recette.id,
                 image:recette.image,
