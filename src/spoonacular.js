@@ -89,18 +89,22 @@ const useCuisineApi = {
                 })
         }
     }),
-
+    /**
+     * Récupère un widget contenant les ustensiles nécessaire à la préparation de la recette
+     * @param recetteID identifiant de la recette
+     * @returns {Promise<unknown>} un widget contentant du HTML
+     */
     getWidgetEquipment : (recetteID) => new Promise((resolve, reject) => {
         const WidgetEquipmentUrl = `https://api.spoonacular.com/recipes/${recetteID}/equipmentWidget?apiKey=${API_KEY}`
-
         fetch(WidgetEquipmentUrl)
-            .then((response) => response.text())
-            .then(html => {
-                resolve(html)
-            })
+            .then((response) => resolve(response.text()))
             .catch(error => reject(error));
     }),
-
+    /**
+     * Fonction qui cherche des recettes similaires à la recette selectionnée
+     * @param recetteID identifiant de la recette sélectionnée
+     * @returns {Promise<unknown>}
+     */
     searchSimilarRecipe : (recetteID) => new Promise((resolve, reject) => {
         const searchSimilarUrl = `https://api.spoonacular.com/recipes/${recetteID}/similar?apiKey=${API_KEY}`
         fetch(searchSimilarUrl)
@@ -113,6 +117,11 @@ const useCuisineApi = {
             })
             .catch(error => reject(error))
     }),
+    /**
+     * Fonction qui récupère la recette et sa liste d'informations à partir de son identifiant
+     * @param recetteID identifiant de la recette
+     * @returns {Promise<unknown>}
+     */
     getRecipeById: (recetteID) => new Promise((resolve,reject) => {
         const searchRecipeById = `https://api.spoonacular.com/recipes/${recetteID}/information?apiKey=${API_KEY}`
         fetch(searchRecipeById)

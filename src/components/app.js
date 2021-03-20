@@ -57,7 +57,7 @@ Vue.component('app', {
         searchVideo : function (recette) { // Cherche une video
             let query = recette.title.split(" "); // On récupère le titre de la recette, mot par mot dans un array
             useYoutubeApi.searchOnMichelDumasChannel(query).then(r => { // On cherche une vidéo correspondante
-                this.urlVideo = "https://www.youtube.com/embed/" + r.items[0].id.videoId; // Le lien pour l'iframe
+                    this.urlVideo = "https://www.youtube.com/embed/" + r.items[0].id.videoId; // Le lien pour l'iframe
             }).catch(err => console.log("ERROR : search video : ", err))
         },
         searchWidget : function (recetteID) {
@@ -85,11 +85,14 @@ Vue.component('app', {
             if (recette.analyzedInstructions === undefined) {
                 await useCuisineApi.getRecipeById(recette.id)
                     .then(recette => this.recetteSelected = recette)
-                    .catch(error => console.log(error));
+                    .catch(error => console.log({"ERROR : showMore":error}));
             }
             console.log("Recette courante : ", this.recetteSelected)
-
-            this.instructionRecettes = this.recetteSelected.analyzedInstructions[0].steps; // Ses instruction
+            if (this.recetteSelected.analyzedInstructions.length !== 0) { // dans le cas où la recette ne possède pas de liste d'instruction
+                this.instructionRecettes = this.recetteSelected.analyzedInstructions[0].steps; // Ses instruction
+            } else {
+                this.instructionRecettes = null
+            }
             // On cherche les infos complémentaires des api grace a la recette courante
             this.searchWine(this.recetteSelected);
             this.searchVideo(this.recetteSelected);
@@ -110,7 +113,7 @@ Vue.component('app', {
                     this.searchMoreRecipe(this.recetteSelected.id);
 
                 })
-                .catch(error => console.log(error))
+                .catch(error => console.log({"ERROR : getRecipeById":error}))
         }
     }
 })

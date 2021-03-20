@@ -14,12 +14,13 @@ const useYoutubeApi = {
         fetch(searchUrl + keywords)
             .then((response) => response.json())
             .then(data => {
-                if (data.items.length > 0) {
+                if (data.items !== undefined && data.items.length > 0) {
                     resolve(data)
                 } else {
                     reject({"error":"aucune vidéo trouvée"})
                 }
-            }).catch(error => reject(error))
+            })
+            .catch(error => reject(error))
     }),
 };
 
