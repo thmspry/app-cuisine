@@ -50,7 +50,6 @@ Vue.component('app', {
                 this.recettes = recettesRandom.recipes;
             })
                 .catch(error => console.log(error));
-            localStorage.removeItem("historique")
             if(localStorage.getItem("historique") != null) {
                 this.historiqueRecette = JSON.parse(localStorage.getItem('historique'))
             }
@@ -102,12 +101,14 @@ Vue.component('app', {
 
             this.recetteSelected = this.getRecettePropre(recette)
             console.log("recetteSelected :", this.recetteSelected)
-            console.log("recetteSelected :", this.recetteSelected.title)
 
             if (this.recetteSelected !== null) {
-                this.historiqueRecette.push(this.recetteSelected);
-                let json = JSON.stringify(this.historiqueRecette);
-                localStorage.setItem("historique", json)
+                let histoID = this.historiqueRecette.map(recette => recette.id)
+                if (histoID.find(id => id === this.recetteSelected.id) === undefined) {
+                    this.historiqueRecette.push(this.recetteSelected);
+                    let json = JSON.stringify(this.historiqueRecette);
+                    localStorage.setItem("historique", json)
+                }
                 // On cherche les infos complémentaires des api grace a la recette courante
                 //this.historiqueStorage(this.recetteSelected);
                 this.searchWine(this.recetteSelected);
@@ -126,10 +127,12 @@ Vue.component('app', {
             this.recetteSelected = this.getRecettePropre(null)
 
             if (this.recetteSelected !== null) {
-                this.historiqueRecette.push(this.recetteSelected);
-                let json = JSON.stringify(this.historiqueRecette);
-                localStorage.setItem("historique", json);
-
+                let histoID = this.historiqueRecette.map(recette => recette.id)
+                if (histoID.find(id => id === this.recetteSelected.id) === undefined) {
+                    this.historiqueRecette.push(this.recetteSelected);
+                    let json = JSON.stringify(this.historiqueRecette);
+                    localStorage.setItem("historique", json)
+                }
                 // On cherche les infos complémentaires des api grace a la recette courante
                 this.searchWine(this.recetteSelected);
                 this.searchVideo(this.recetteSelected);
@@ -137,6 +140,12 @@ Vue.component('app', {
                 this.searchMoreRecipe(this.recetteSelected.id);
             }
         },
+        /**
+         * Cette fonction retourne une version simplifié de la recette obtenu par l'API, on ne garde en mémoire que les éléments qui nous intéresse pour éviter de surcharger l'application
+         * et enregistrer des informations inutiles dans le tableau de recette stocké dans localStorage
+         * @param recette
+         * @returns {{image: *, veryHealthy, glutenFree, veryPopular, vegan, extendedIngredients, cheap, title: *, aggregateLikes, cuisines, vegetarian, weightWatcherSmartPoints, id}}
+         */
         getRecettePropre :  function (recette) {
             let recettePropre = "";
 
@@ -150,7 +159,7 @@ Vue.component('app', {
                     });
             }
 
-            recettePropre = {
+            recettePropre = { //Ici on récupère uniquement les attributs qui nous intéresse pour notre application
                 id:recette.id,
                 image:recette.image,
                 cuisines:recette.cuisines,
