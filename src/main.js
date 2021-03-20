@@ -22,28 +22,17 @@ document.addEventListener('DOMContentLoaded', function() {
     var instanceModal = M.Modal.init(modal, optionsModal);
 
 
+    // Pour gérer l'animation de la petite flèche dans la Collapsible
     let dropdown = document.querySelector(".collapsible");
-
-    dropdown.addEventListener("click", function() {
+    dropdown.addEventListener("click", function() { // Au clic
         let arrow = document.querySelector("#arrow");
 
+        // Si la fleche est vers le bas (soit par défaut au démarage de la page soit après être retournée)
         if (!arrow.hasAttribute("class") || arrow.getAttribute("class") === "rotate-180-down") {
-            arrow.setAttribute("class", "rotate-180-up");
+            arrow.setAttribute("class", "rotate-180-up"); // On la tourne vers le haut (Collapsible ouverte)
         } else {
-            arrow.setAttribute("class", "rotate-180-down");
-
+            arrow.setAttribute("class", "rotate-180-down"); // On la tourne vers le bas (Collapsible fermée)
         }
     });
-
-    /*let checkboxes = document.querySelectorAll(".filled-in");
-    if (localStorage.getItem('intolerances') != null) {
-        let intolerances = localStorage.getItem("intolerances")
-        checkboxes.forEach(c => {
-            //console.log("On est sur la cb",c.getAttribute("id"))
-            if(intolerances[c.getAttribute("id")] === true) {
-                c.setAttribute("checked", "checked");
-            }
-        })
-    }*/
 
 });
