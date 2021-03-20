@@ -4,6 +4,15 @@ const vue = new Vue({
 
 document.addEventListener('DOMContentLoaded', function() {
 
+    // Instanciation des Tabs
+
+    var tabs = document.querySelectorAll('.tabs');
+    let optionsTabs = {
+        duration : 500
+    }
+    var instanceTabs = M.Tabs.init(tabs, optionsTabs);
+
+
 
     // Instanciation Collapsible des intolérances
     var collapsible = document.querySelectorAll('.collapsible');

@@ -2,24 +2,30 @@ import useCuisineApi from "../spoonacular.js";
 import useYoutubeApi from "../youtubeApi.js";
 Vue.component('app', {
     template: `<div id="app">
-                    <div id="search-case">
-                        <search @search-event="searchIsOver" > </search>
+                    <div class="col s12">
+                      <ul class="tabs">
+                        <li class="tab col s3"><a class="active" href="#recettes">Recettes</a></li>
+                        <li class="tab col s3"><a href="#historique">Historique</a></li>
+                      </ul>
                     </div>
-                    <div id="result">
-                    
-                        <div id="recettes-apercu" class="grid-recettes">
-                            <recette v-if="recettes" v-for="recette in recettes" v-bind:key="recette.id" v-bind:recette="recette" @showMore-event="showMore"> </recette>
+                    <div id="recettes" class="col s12">
+                        <div id="search-case">
+                            <search @search-event="searchIsOver" > </search>
                         </div>
-                        
+                        <div id="result">
+                            <div id="recettes-apercu" class="grid-recettes">
+                                <recette v-if="recettes" v-for="recette in recettes" v-bind:key="recette.id" v-bind:recette="recette" @showMore-event="showMore"> </recette>
+                            </div>
+
+                            <div id="details">
+                                <detail v-bind:recette="recetteSelected" :wine="wine" :urlVideo="urlVideo" 
+                                :instructions="instructionRecettes" :recetteSimilaire="recetteSimilaire" :widgetEquipment="widgetEquipment"
+                                @showMorebyId-event="showMorebyId"> </detail>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="historique" class="col s12">
                         <historique v-if="historiqueRecette" v-bind:historique="historiqueRecette"></historique>
-                      
-                        
-                        <div id="details">
-                            <detail v-bind:recette="recetteSelected" :wine="wine" :urlVideo="urlVideo" 
-                            :recetteSimilaire="recetteSimilaire" :widgetEquipment="widgetEquipment"
-                            @showMorebyId-event="showMorebyId"> </detail>
-                        </div>
-                        
                     </div>
                </div>`,
     data : function () {
