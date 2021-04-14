@@ -10,6 +10,10 @@ const useYoutubeApi = {
     searchOnMichelDumasChannel: (keywords) => new Promise((resolve, reject) => {
         let searchUrl= `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${API_KEY}&type=video&channelId=UCSLyEx8ISkp567AjOAHYN5Q&q=`;
 
+        /**
+         * Le pipe permet de faire un OU entre les mots pour l'API
+         * Par exemple, si le premier mot ne donne rien mais le deuxième si, l'API renvoie le résultat du deuxième
+         */
         keywords = keywords.join('|')
         console.log("Je vais chercher avec : " + searchUrl + keywords)
         fetch(searchUrl + keywords)
@@ -18,7 +22,7 @@ const useYoutubeApi = {
                 if (data.items !== undefined && data.items.length > 0) {
                     resolve(data.items[0].id.videoId)
                 } else {
-                    reject({"error":"aucune vidéo trouvée"})
+                    reject({"error":"aucune vidéo trouvée OU quota dépassé"})
                 }
             })
             .catch(error => reject(error))
